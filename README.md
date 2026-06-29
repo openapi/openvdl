@@ -40,6 +40,7 @@ In that sense, OpenVDL is closer to what OpenAPI did for APIs than to a traditio
 - [ROADMAP.md](ROADMAP.md): working roadmap for the evolution of the spec
 - [libopenvdl/](libopenvdl): early C reference runtime scaffold for local validation
 - [validators/](validators): curated maintained validator library with a single `openvdl.yml` entry point
+- [explorations/](explorations): diary of agentic and LLM-assisted exploration rounds over world facts
 - [examples/email.yaml](examples/email.yaml): example email validator
 - [examples/iban.yaml](examples/iban.yaml): example IBAN validator
 - [examples/email-acme.yaml](examples/email-acme.yaml): example of extending a base validator
@@ -92,7 +93,7 @@ The core ideas are:
 - provider and organization policy should layer on top of base validators
 - validation may involve both local rules and provider-backed truth-source checks
 - OpenVDL should be able to describe the request/response contract of external validation providers
-- maintained validator libraries should be able to record world facts that justify validator evolution
+- OpenVDL documents should be able to embed world facts that justify validator evolution
 
 Typical examples:
 
@@ -100,7 +101,7 @@ Typical examples:
 - apply Gmail-specific policy only when the domain is `gmail.com`
 - aggregate email, phone, and internal employee ID validators into a single user identifier validator
 - adapt a third-party validation API into a standard OpenVDL validation flow
-- maintain a curated validator catalog whose changes are traceable to real-world observations
+- maintain a curated validator catalog whose changes are traceable to real-world facts encoded in the validator semantics
 
 ## Validation Model
 
@@ -154,6 +155,39 @@ For those cases, OpenVDL should describe:
 
 One open architectural question is whether providers should implement OpenVDL natively, or whether OpenVDL should define an adapter layer that formalizes how arbitrary provider APIs are integrated.
 
+## Facts Semantics
+
+OpenVDL should treat facts about the world as part of validator semantics, not as side documentation.
+
+If a validator depends on a discovered real-world constraint, that fact should be representable inside the OpenVDL document itself, with fields such as:
+
+- subject
+- statement
+- impact on validation
+- provenance
+- confidence
+- effective date or revision window
+
+Separate notes may still exist as supporting material, but they should not be the primary semantic source. The validator document must carry the essential fact model so implementations and maintainers do not lose critical context.
+
+## Exploration Diary
+
+OpenVDL should also preserve the discovery process behind maintained validator changes.
+
+Modern LLM and agentic tools make it possible to run iterative explorations over world facts that may later affect validation semantics. Those explorations should be logged as research rounds, hypotheses, and findings.
+
+That diary is useful for:
+
+- preserving how a fact was discovered
+- retaining failed or partial hypotheses
+- linking validator changes back to exploration rounds
+- supporting future re-evaluation when the world changes again
+
+The intended split is:
+
+- OpenVDL validator documents contain the canonical semantic facts
+- the exploration diary records how those facts were discovered and promoted
+
 ## Status
 
 This repository currently contains a draft specification intended for discussion and experimentation. It is not yet a final standard.
@@ -163,3 +197,5 @@ Current work is tracked in [ROADMAP.md](ROADMAP.md).
 An early runtime scaffold is available in [libopenvdl/](libopenvdl).
 
 A curated maintained validator library scaffold is available in [validators/](validators), with [validators/openvdl.yml](validators/openvdl.yml) as its current entry point.
+
+An exploration diary scaffold is available in [explorations/](explorations), with [explorations/index.md](explorations/index.md) as its current index.

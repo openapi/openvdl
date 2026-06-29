@@ -6,5 +6,11 @@ description: "Catalog entry point for curated phone validators maintained by Ope
 imports: []
 metadata:
   role: library-namespace
-  notes:
-    - "Phone validators will likely depend on numbering-plan facts tracked under validators/facts/."
+facts:
+  - id: phone.namespace.world-facts
+    subject: phone-validation
+    statement: "Phone validators may depend on numbering-plan facts that change over time."
+    impact: "Phone validators should embed factual constraints and revision context directly in their OpenVDL definitions."
+    provenance: "OpenVDL maintained validator policy"
+    confidence: medium
+    effectiveDate: "2026-06-29"

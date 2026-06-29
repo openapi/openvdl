@@ -20,6 +20,8 @@ The primary purpose of OpenVDL is to standardize the representation of validator
 
 OpenVDL is further intended to support a reusable validation ecosystem in which validators can be extended, referenced, aggregated, and composed without rewriting existing logic.
 
+OpenVDL may also need to represent factual world knowledge that materially affects validation outcomes.
+
 ## 2. Terminology
 
 ### Validator
@@ -264,7 +266,24 @@ Two architectural models are possible:
 
 The adapter model may be more deployable in practice because many validation providers already expose established APIs that cannot easily be replaced.
 
-## 12. Result Model
+## 12. Facts and World Knowledge
+
+Some validators depend on factual world knowledge that changes over time, such as numbering plans, provider behavior, registry policy, or allocation status.
+
+Such facts SHOULD be representable within OpenVDL documents as part of validator semantics rather than being left solely to external human-readable notes.
+
+An implementation-facing fact representation SHOULD be able to carry:
+
+- subject
+- factual statement
+- impact on validation behavior
+- provenance or source reference
+- confidence level
+- effective date or revision interval
+
+External notes MAY exist for explanation or editorial detail, but they SHOULD NOT be the sole semantic carrier of facts that materially affect validation outcomes.
+
+## 13. Result Model
 
 Every compliant implementation MUST return exactly one of the following outcomes:
 
@@ -278,7 +297,7 @@ Every compliant implementation MUST return exactly one of the following outcomes
 
 `ERROR` means evaluation could not complete deterministically, for example due to malformed validator definitions, unresolved references, or unavailable required capabilities.
 
-## 13. Error Reporting
+## 14. Error Reporting
 
 Validation engines SHOULD expose structured diagnostics.
 
@@ -299,13 +318,13 @@ expected: maximum length 64
 actual: length 71
 ```
 
-## 14. Versioning
+## 15. Versioning
 
 Validators are immutable.
 
 Breaking changes MUST require a new version. Implementations and applications SHOULD be able to select validator versions explicitly.
 
-## 15. Distribution
+## 16. Distribution
 
 Validators SHOULD be distributable independently from software implementations.
 
@@ -324,7 +343,7 @@ Illustrative identifiers:
 - `/openvdl/iban`
 - `/openvdl/isbn`
 
-## 16. Conformance
+## 17. Conformance
 
 An implementation conforms to this draft if it:
 
@@ -335,7 +354,7 @@ An implementation conforms to this draft if it:
 
 Capability declarations SHOULD clearly identify unsupported optional features, especially external lookup features.
 
-## 17. Security Considerations
+## 18. Security Considerations
 
 Validators MUST NOT execute arbitrary code.
 
@@ -345,7 +364,7 @@ External lookups SHOULD be sandboxed.
 
 Implementations SHOULD enforce denial-of-service protections, including limits for recursion depth, input size, evaluation steps, and network behavior.
 
-## 18. IANA Considerations
+## 19. IANA Considerations
 
 Future versions may request registration of media types such as:
 
@@ -355,7 +374,7 @@ Future versions may request registration of media types such as:
 
 This document makes no current IANA requests.
 
-## 19. References
+## 20. References
 
 - RFC 2119
 - RFC 5234
@@ -365,6 +384,6 @@ This document makes no current IANA requests.
 - ISO 13616
 - ISO 7064
 
-## 20. Acknowledgments
+## 21. Acknowledgments
 
 Acknowledgment is due to contributors interested in making validation portable, deterministic, and implementation-independent.

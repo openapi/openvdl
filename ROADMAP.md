@@ -26,6 +26,7 @@ The current foundation of OpenVDL is:
 - [x] define the problem space for provider-backed validation and truth-source integration
 - [x] add an initial `libopenvdl` C runtime scaffold
 - [x] add an initial maintained validator library scaffold with a single `openvdl.yml` entry point
+- [x] add an exploration diary scaffold for world-fact discovery rounds
 - [ ] define the canonical OpenVDL document model
 - [ ] define precise semantics of `extends`
 - [ ] define precise semantics of `imports` and `ref`
@@ -44,7 +45,9 @@ The current foundation of OpenVDL is:
 - [ ] define JSON serialization and JSON Schema
 - [ ] align `libopenvdl` with the canonical data model once the shape is fixed
 - [ ] define the structure and governance model of the maintained validator library
-- [ ] define how world facts are recorded and linked to validator revisions
+- [ ] define first-class fact semantics inside OpenVDL documents
+- [ ] define how embedded facts are linked to validator revisions
+- [ ] define how exploration rounds link to semantic facts and validator revisions
 
 ## Proposed Near-Term Work
 
@@ -112,8 +115,18 @@ Define how the project-managed validator library should be organized:
 
 - single entry point such as `validators/openvdl.yml`
 - namespace layout by domain
-- separation between validator definitions and supporting fact notes
-- traceability from world fact to validator revision
+- embedded fact representation inside validator documents
+- traceability from embedded fact to validator revision
+
+### 5c. Exploration Diary
+
+Define how the exploration diary should work:
+
+- round naming and lifecycle
+- hypothesis recording
+- confidence tracking
+- linkage from exploration round to embedded semantic fact
+- linkage from semantic fact to validator revision
 
 ### 6. Provider Integration Model
 
@@ -143,6 +156,7 @@ This includes formalizing:
 - machine-readable schema artifacts
 - mature `libopenvdl` from scaffold into a reference implementation
 - mature the maintained validator library into a curated public catalog
+- mature the exploration diary into a reusable fact-discovery workflow
 
 ## Open Questions
 
@@ -154,8 +168,9 @@ This includes formalizing:
 - Should OpenVDL require providers to conform directly, or should adapters be the primary integration path?
 - How should OpenVDL distinguish syntactic validation from truth-source validation?
 - How should provider trust, provenance, and freshness be represented?
-- How should factual world changes be represented: markdown notes, structured metadata, or both?
+- What is the canonical fact model for world knowledge inside OpenVDL documents?
 - Should curated validator libraries be part of the OpenVDL core ecosystem or a separate maintained distribution?
+- What is the minimum link model between exploration round, embedded fact, and validator revision?
 
 ## Suggested Next Step
 

@@ -19,23 +19,23 @@ Examples of changes that may matter:
 
 - `openvdl.yml`: repository-level entry point for curated validators
 - domain folders such as `email/`, `phone/`, `tax/`, `banking/`
-- `facts/`: supporting notes about world facts that motivate validator
-  updates
+- embedded `facts` sections inside validator documents where world
+  knowledge affects validation behavior
 
 ## Important Principle
 
-Facts discovered over time should be captured explicitly and traceably.
+Facts discovered over time should be captured explicitly, traceably, and
+inside the semantic model of OpenVDL documents.
 
-A validator change should ideally be linked to:
+A validator change should ideally be linked to embedded facts carrying:
 
-- a documented observation
+- a factual statement
 - a source or rationale
+- a confidence indicator
 - a date or revision note
 
-This helps distinguish:
-
-- the validator definition
-- the motivation for the validator definition
+Separate notes may still exist for editorial context, but they are not
+the canonical semantic carrier of validation facts.
 
 ## Current Status
 

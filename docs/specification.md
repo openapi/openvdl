@@ -61,8 +61,34 @@ OpenVDL should provide native support for:
 - root documents that aggregate validators from a shared validator set
 - multi-branch validator selection through explicit matching
 - provider-backed validation flows based on authoritative truth sources
+- embedded fact semantics for world knowledge that affects validation behavior
 
 This makes OpenVDL closer to a distributed validator codebase than to a simple schema file.
+
+## Facts as First-Class Semantics
+
+OpenVDL should support explicit representation of world facts that influence validator behavior.
+
+These are not merely comments. They are part of the semantic basis for why a validator accepts, rejects, routes, or deprecates values.
+
+Examples include:
+
+- numbering-plan changes
+- provider policy changes
+- identifier allocation changes
+- registry behavior changes
+- deprecation of value ranges
+
+An OpenVDL fact model should allow a validator to express, at minimum:
+
+- subject
+- factual statement
+- validation impact
+- provenance
+- confidence
+- effective date
+
+Separate explanatory notes may still exist, but the essential fact representation should remain inside the OpenVDL document model so implementations and maintainers do not lose critical meaning.
 
 ## Reuse and Composition Primitives
 

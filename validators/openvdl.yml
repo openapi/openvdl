@@ -13,5 +13,11 @@ compose:
 metadata:
   role: library-entrypoint
   curatedBy: OpenVDL Project
-  notes:
-    - "This file is a catalog entry point, not a single business validator."
+facts:
+  - id: maintained-library.curated
+    subject: validator-library
+    statement: "This entry point aggregates validators curated by the OpenVDL project."
+    impact: "Consumers may treat imported validators as part of a maintained project catalog."
+    provenance: "OpenVDL project policy"
+    confidence: high
+    effectiveDate: "2026-06-29"
