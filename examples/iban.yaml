@@ -1,0 +1,37 @@
+openvdl: "0.1"
+id: "openvdl/iban"
+version: "1.0.0"
+name: "IBAN"
+description: "Portable IBAN validation using structural and algorithmic checks."
+input:
+  type: string
+normalization:
+  - type: stripWhitespace
+  - type: uppercase
+result:
+  valid: VALID
+  invalid: INVALID
+  error: ERROR
+stages:
+  - id: structure
+    rules:
+      - id: iban.charset
+        type: pattern
+        engine: regex
+        value: "^[A-Z0-9]+$"
+      - id: iban.min-length
+        type: minLength
+        value: 15
+      - id: iban.max-length
+        type: maxLength
+        value: 34
+  - id: checksum
+    rules:
+      - id: iban.mod97
+        type: algorithm
+        name: mod97
+        expect: 1
+metadata:
+  references:
+    - ISO 13616
+    - ISO 7064

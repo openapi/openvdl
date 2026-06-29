@@ -1,0 +1,44 @@
+openvdl: "0.1"
+id: "openvdl/email"
+version: "1.0.0"
+name: "Email Address"
+description: "Portable email validation with syntax and optional provider policy stages."
+input:
+  type: string
+result:
+  valid: VALID
+  invalid: INVALID
+  error: ERROR
+stages:
+  - id: syntax
+    rules:
+      - id: email.max-length
+        type: maxLength
+        value: 254
+      - id: email.contains-at
+        type: pattern
+        engine: regex
+        value: "^[^@]+@[^@]+$"
+      - id: email.local.max-length
+        type: partMaxLength
+        part: local-part
+        value: 64
+      - id: email.domain.max-length
+        type: partMaxLength
+        part: domain
+        value: 253
+  - id: provider-policy
+    optional: true
+    when:
+      type: domainEquals
+      value: gmail.com
+    rules:
+      - id: email.gmail.plus-addressing
+        type: capability
+        name: plus-addressing
+        value: true
+metadata:
+  references:
+    - RFC 5321
+    - RFC 5322
+    - RFC 6531
