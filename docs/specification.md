@@ -6,6 +6,8 @@ OpenVDL defines a portable format for describing validation logic as data.
 
 Instead of reimplementing validators in each language, applications implement an OpenVDL parser and interpreter.
 
+OpenVDL is intended to model a reusable validator codebase, where validators can be extended, referenced, aggregated, and composed declaratively.
+
 ## Core Concepts
 
 ### Validator
@@ -28,6 +30,10 @@ Software that parses and evaluates OpenVDL documents.
 
 A repository or distribution mechanism for published validators.
 
+### Aggregator
+
+A root OpenVDL document that orchestrates multiple validators as an entry point.
+
 ## Design Model
 
 Validators may be:
@@ -36,12 +42,40 @@ Validators may be:
 - composed from reusable validators
 - extended with provider-specific policies
 - extended with organization-specific rules
+- used as entry-point aggregators for other validators
 
 Example progression for email validation:
 
 1. RFC syntax
 2. provider policy
 3. organization policy
+
+## Foundational Principles
+
+OpenVDL should provide native support for:
+
+- extension of base validators without copy-paste
+- composition of multiple validators into higher-level validators
+- conditional activation of rules or validators
+- layered policy application
+- root documents that aggregate validators from a shared validator set
+- multi-branch validator selection through explicit matching
+- provider-backed validation flows based on authoritative truth sources
+
+This makes OpenVDL closer to a distributed validator codebase than to a simple schema file.
+
+## Reuse and Composition Primitives
+
+The model should distinguish clearly between:
+
+- `extends`: inherit a validator and add constraints
+- `imports`: declare reusable dependencies
+- `ref`: reference an imported validator
+- composition operators: `allOf`, `anyOf`, `oneOf`, `not`
+- conditional operators: `if`, `then`, `else`
+- multi-branch conditional operators: `match`, `cases`
+
+These concepts should remain semantically separate. Extension is not the same as reference, and reference is not the same as composition.
 
 ## Rule Categories
 
@@ -85,6 +119,8 @@ Example progression for email validation:
 - `if`
 - `else`
 - `switch`
+- `match`
+- `cases`
 - country-dependent behavior
 - provider-dependent behavior
 - version-dependent behavior
@@ -119,6 +155,41 @@ Example:
 - `email/org/example-corp`
 
 Each validator remains reusable and independently versioned.
+
+An OpenVDL root document may also work primarily as an aggregator. In that model, the root file imports validators and orchestrates them into a final validation flow.
+
+Illustrative examples:
+
+- accept email OR phone OR internal employee ID
+- use a national VAT validator selected by country
+- extend a base email validator with organization-specific domain policy
+- apply provider rules only when the provider condition matches
+
+## Provider-Backed Validation
+
+OpenVDL should cover not only local validation logic, but also provider-backed validation based on external truth sources.
+
+Examples include:
+
+- VAT validation against national registries
+- business identifier checks against chamber-of-commerce style databases
+- banking checks against external banking systems
+- domain or certificate checks against network-based sources
+
+This implies that OpenVDL may need to standardize:
+
+- provider request contracts
+- provider response contracts
+- response-to-result mapping
+- capability declarations for networked or authoritative checks
+- adapter definitions for third-party APIs that do not speak OpenVDL natively
+
+Two models are possible:
+
+1. native provider conformance, where providers expose OpenVDL-compatible request/response semantics directly
+2. adapter-based conformance, where OpenVDL defines a way to wrap external provider APIs behind a formal mapping layer
+
+The second model is likely more realistic for adoption because most truth-source providers already expose existing APIs.
 
 ## Deterministic Validation
 

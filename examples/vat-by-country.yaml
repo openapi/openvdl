@@ -1,0 +1,36 @@
+openvdl: "0.1"
+id: "openvdl/vat/by-country"
+version: "1.0.0"
+name: "VAT by Country"
+description: "Aggregator validator dispatching to a national VAT validator using match/cases."
+imports:
+  - "openvdl/vat/it@1"
+  - "openvdl/vat/de@1"
+  - "openvdl/vat/fr@1"
+input:
+  type: object
+  fields:
+    country:
+      type: string
+    value:
+      type: string
+compose:
+  match:
+    field: country
+    cases:
+      - equals: IT
+        ref: "openvdl/vat/it@1"
+      - equals: DE
+        ref: "openvdl/vat/de@1"
+      - equals: FR
+        ref: "openvdl/vat/fr@1"
+    default:
+      error:
+        code: unsupported-country
+        message: "No VAT validator is available for the requested country."
+result:
+  valid: VALID
+  invalid: INVALID
+  error: ERROR
+metadata:
+  role: aggregator

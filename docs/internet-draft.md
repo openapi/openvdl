@@ -18,6 +18,8 @@ OpenVDL introduces a portable representation of validation semantics. Instead of
 
 The primary purpose of OpenVDL is to standardize the representation of validators.
 
+OpenVDL is further intended to support a reusable validation ecosystem in which validators can be extended, referenced, aggregated, and composed without rewriting existing logic.
+
 ## 2. Terminology
 
 ### Validator
@@ -40,6 +42,10 @@ Software capable of parsing and evaluating OpenVDL documents.
 
 A repository of published validators.
 
+### Aggregator
+
+A root OpenVDL document that imports, references, and orchestrates other validators.
+
 ## 3. Requirements Language
 
 The key words "MUST", "SHOULD", "MAY", "MUST NOT", and "SHOULD NOT" in this document are to be interpreted as described in RFC 2119.
@@ -52,6 +58,7 @@ OpenVDL is designed to be:
 - portable
 - language independent
 - extensible
+- composable
 - deterministic
 - versionable
 - human readable
@@ -78,6 +85,8 @@ OpenVDL describes validation logic for structured values, including but not limi
 
 The format is also suitable for organization-specific validation policies.
 
+It may also be suitable for validation workflows that depend on external providers and authoritative truth sources.
+
 ## 6. Validation Model
 
 A validator is composed of one or more validation stages. Each stage contributes additional constraints.
@@ -100,6 +109,8 @@ High-level processing model:
 3. resolve references
 4. evaluate stages and rules
 5. return validation result and diagnostics
+
+An OpenVDL document MAY act either as a standalone validator or as an aggregator that coordinates other validators.
 
 ## 8. Rule Categories
 
@@ -153,6 +164,8 @@ Conditional rules include:
 - `if`
 - `else`
 - `switch`
+- `match`
+- `cases`
 - country-dependent policies
 - provider-dependent policies
 - version-dependent policies
@@ -182,7 +195,22 @@ Support for external rules SHOULD be capability-gated and MAY be disabled in con
 
 ## 9. Composition
 
-Validators MAY import or reference other validators.
+Validators MAY extend, import, reference, and compose other validators.
+
+OpenVDL SHOULD support distinct primitives for:
+
+- `extends`
+- `imports`
+- `ref`
+- `allOf`
+- `anyOf`
+- `oneOf`
+- `not`
+- `if`
+- `then`
+- `else`
+- `match`
+- `cases`
 
 For example, an email validator may:
 
@@ -191,6 +219,12 @@ For example, an email validator may:
 3. add organization-specific policy
 
 This model allows reusable building blocks and layered policies without duplicated code.
+
+An OpenVDL root document MAY also act as an aggregator. In that role it imports reusable validators and defines orchestration logic over them, for example:
+
+1. accept email OR phone OR internal employee identifier
+2. select a country-specific validator based on input context
+3. apply provider policy only when provider conditions match
 
 ## 10. Provider Policies
 
@@ -204,7 +238,33 @@ Example provider-specific behavior could include:
 
 Applications SHOULD consume provider policy definitions through the same OpenVDL format instead of embedding provider-specific logic in application code.
 
-## 11. Result Model
+## 11. Provider-Backed Validation
+
+Some validation workflows depend on external providers or authoritative truth sources rather than solely on local rule evaluation.
+
+Examples include:
+
+- government registries
+- tax authority systems
+- business registries
+- banking systems
+- third-party validation APIs
+
+OpenVDL SHOULD be able to describe:
+
+- the request structure sent to a validation provider
+- the response structure returned by a validation provider
+- the mapping from provider response fields to OpenVDL result semantics
+- capability and trust requirements for provider-backed validation
+
+Two architectural models are possible:
+
+1. providers conform directly to OpenVDL request and response contracts
+2. OpenVDL defines an adapter model for integrating third-party APIs that do not natively implement OpenVDL
+
+The adapter model may be more deployable in practice because many validation providers already expose established APIs that cannot easily be replaced.
+
+## 12. Result Model
 
 Every compliant implementation MUST return exactly one of the following outcomes:
 
@@ -218,7 +278,7 @@ Every compliant implementation MUST return exactly one of the following outcomes
 
 `ERROR` means evaluation could not complete deterministically, for example due to malformed validator definitions, unresolved references, or unavailable required capabilities.
 
-## 12. Error Reporting
+## 13. Error Reporting
 
 Validation engines SHOULD expose structured diagnostics.
 
@@ -239,13 +299,13 @@ expected: maximum length 64
 actual: length 71
 ```
 
-## 13. Versioning
+## 14. Versioning
 
 Validators are immutable.
 
 Breaking changes MUST require a new version. Implementations and applications SHOULD be able to select validator versions explicitly.
 
-## 14. Distribution
+## 15. Distribution
 
 Validators SHOULD be distributable independently from software implementations.
 
@@ -264,7 +324,7 @@ Illustrative identifiers:
 - `/openvdl/iban`
 - `/openvdl/isbn`
 
-## 15. Conformance
+## 16. Conformance
 
 An implementation conforms to this draft if it:
 
@@ -275,7 +335,7 @@ An implementation conforms to this draft if it:
 
 Capability declarations SHOULD clearly identify unsupported optional features, especially external lookup features.
 
-## 16. Security Considerations
+## 17. Security Considerations
 
 Validators MUST NOT execute arbitrary code.
 
@@ -285,7 +345,7 @@ External lookups SHOULD be sandboxed.
 
 Implementations SHOULD enforce denial-of-service protections, including limits for recursion depth, input size, evaluation steps, and network behavior.
 
-## 17. IANA Considerations
+## 18. IANA Considerations
 
 Future versions may request registration of media types such as:
 
@@ -295,7 +355,7 @@ Future versions may request registration of media types such as:
 
 This document makes no current IANA requests.
 
-## 18. References
+## 19. References
 
 - RFC 2119
 - RFC 5234
@@ -305,6 +365,6 @@ This document makes no current IANA requests.
 - ISO 13616
 - ISO 7064
 
-## 19. Acknowledgments
+## 20. Acknowledgments
 
 Acknowledgment is due to contributors interested in making validation portable, deterministic, and implementation-independent.

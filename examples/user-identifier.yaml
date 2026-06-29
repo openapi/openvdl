@@ -1,0 +1,22 @@
+openvdl: "0.1"
+id: "acme/user-identifier"
+version: "1.0.0"
+name: "User Identifier"
+description: "Aggregator validator accepting email, phone, or internal employee ID."
+imports:
+  - "openvdl/email@1"
+  - "openvdl/phone/e164@1"
+  - "acme/employee-id@2"
+input:
+  type: string
+compose:
+  anyOf:
+    - ref: "openvdl/email@1"
+    - ref: "openvdl/phone/e164@1"
+    - ref: "acme/employee-id@2"
+result:
+  valid: VALID
+  invalid: INVALID
+  error: ERROR
+metadata:
+  role: aggregator

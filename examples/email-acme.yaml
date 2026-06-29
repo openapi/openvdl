@@ -1,0 +1,27 @@
+openvdl: "0.1"
+id: "acme/email"
+version: "1.0.0"
+name: "ACME Email"
+description: "Organization-specific email validator built by extending the base email validator."
+extends:
+  - "openvdl/email@1"
+input:
+  type: string
+result:
+  valid: VALID
+  invalid: INVALID
+  error: ERROR
+stages:
+  - id: acme-policy
+    rules:
+      - id: acme-domain-only
+        type: domainEquals
+        value: acme.com
+      - id: acme-local-min-length
+        type: partMinLength
+        part: local-part
+        value: 3
+metadata:
+  examples:
+    - alice@acme.com
+    - ops@acme.com
