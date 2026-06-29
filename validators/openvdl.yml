@@ -1,0 +1,17 @@
+openvdl: "0.1"
+id: "openvdl/maintained"
+version: "0.1.0"
+name: "OpenVDL Maintained Validator Library"
+description: "Entry point for validators curated and maintained by the OpenVDL project."
+imports:
+  - "./email/openvdl.yml"
+  - "./phone/openvdl.yml"
+compose:
+  allOf:
+    - ref: "./email/openvdl.yml"
+    - ref: "./phone/openvdl.yml"
+metadata:
+  role: library-entrypoint
+  curatedBy: OpenVDL Project
+  notes:
+    - "This file is a catalog entry point, not a single business validator."

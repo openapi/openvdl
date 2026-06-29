@@ -8,3 +8,6 @@
 # OS noise
 .DS_Store
 Thumbs.db
+
+# Local build output
+libopenvdl/build/

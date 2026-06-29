@@ -1,4 +1,4 @@
-# ROADMA
+# ROADMAP
 
 This file tracks the working evolution of OpenVDL.
 
@@ -24,6 +24,8 @@ The current foundation of OpenVDL is:
 - [x] introduce `match` / `cases` as multi-branch dispatch
 - [x] add initial composed validator examples
 - [x] define the problem space for provider-backed validation and truth-source integration
+- [x] add an initial `libopenvdl` C runtime scaffold
+- [x] add an initial maintained validator library scaffold with a single `openvdl.yml` entry point
 - [ ] define the canonical OpenVDL document model
 - [ ] define precise semantics of `extends`
 - [ ] define precise semantics of `imports` and `ref`
@@ -40,6 +42,9 @@ The current foundation of OpenVDL is:
 - [ ] define normalization pipeline semantics
 - [ ] define conformance levels for implementations
 - [ ] define JSON serialization and JSON Schema
+- [ ] align `libopenvdl` with the canonical data model once the shape is fixed
+- [ ] define the structure and governance model of the maintained validator library
+- [ ] define how world facts are recorded and linked to validator revisions
 
 ## Proposed Near-Term Work
 
@@ -101,6 +106,15 @@ Build a small but representative validator set:
 - VAT by country dispatcher
 - generic user identifier aggregator
 
+### 5b. Maintained Validator Library
+
+Define how the project-managed validator library should be organized:
+
+- single entry point such as `validators/openvdl.yml`
+- namespace layout by domain
+- separation between validator definitions and supporting fact notes
+- traceability from world fact to validator revision
+
 ### 6. Provider Integration Model
 
 Decide whether OpenVDL should standardize:
@@ -127,6 +141,8 @@ This includes formalizing:
 - reference interpreter
 - CLI and playground
 - machine-readable schema artifacts
+- mature `libopenvdl` from scaffold into a reference implementation
+- mature the maintained validator library into a curated public catalog
 
 ## Open Questions
 
@@ -138,6 +154,8 @@ This includes formalizing:
 - Should OpenVDL require providers to conform directly, or should adapters be the primary integration path?
 - How should OpenVDL distinguish syntactic validation from truth-source validation?
 - How should provider trust, provenance, and freshness be represented?
+- How should factual world changes be represented: markdown notes, structured metadata, or both?
+- Should curated validator libraries be part of the OpenVDL core ecosystem or a separate maintained distribution?
 
 ## Suggested Next Step
 

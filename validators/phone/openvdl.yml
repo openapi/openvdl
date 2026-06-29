@@ -1,0 +1,10 @@
+openvdl: "0.1"
+id: "openvdl/maintained/phone"
+version: "0.1.0"
+name: "Maintained Phone Validators"
+description: "Catalog entry point for curated phone validators maintained by OpenVDL."
+imports: []
+metadata:
+  role: library-namespace
+  notes:
+    - "Phone validators will likely depend on numbering-plan facts tracked under validators/facts/."

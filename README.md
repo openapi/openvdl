@@ -38,6 +38,8 @@ In that sense, OpenVDL is closer to what OpenAPI did for APIs than to a traditio
 - [docs/composition-model.md](docs/composition-model.md): foundational model for extension, composition, and validator aggregation
 - [docs/provider-integration-model.md](docs/provider-integration-model.md): model for provider request/response contracts, truth sources, and API adaptation
 - [ROADMAP.md](ROADMAP.md): working roadmap for the evolution of the spec
+- [libopenvdl/](libopenvdl): early C reference runtime scaffold for local validation
+- [validators/](validators): curated maintained validator library with a single `openvdl.yml` entry point
 - [examples/email.yaml](examples/email.yaml): example email validator
 - [examples/iban.yaml](examples/iban.yaml): example IBAN validator
 - [examples/email-acme.yaml](examples/email-acme.yaml): example of extending a base validator
@@ -90,6 +92,7 @@ The core ideas are:
 - provider and organization policy should layer on top of base validators
 - validation may involve both local rules and provider-backed truth-source checks
 - OpenVDL should be able to describe the request/response contract of external validation providers
+- maintained validator libraries should be able to record world facts that justify validator evolution
 
 Typical examples:
 
@@ -97,6 +100,7 @@ Typical examples:
 - apply Gmail-specific policy only when the domain is `gmail.com`
 - aggregate email, phone, and internal employee ID validators into a single user identifier validator
 - adapt a third-party validation API into a standard OpenVDL validation flow
+- maintain a curated validator catalog whose changes are traceable to real-world observations
 
 ## Validation Model
 
@@ -155,3 +159,7 @@ One open architectural question is whether providers should implement OpenVDL na
 This repository currently contains a draft specification intended for discussion and experimentation. It is not yet a final standard.
 
 Current work is tracked in [ROADMAP.md](ROADMAP.md).
+
+An early runtime scaffold is available in [libopenvdl/](libopenvdl).
+
+A curated maintained validator library scaffold is available in [validators/](validators), with [validators/openvdl.yml](validators/openvdl.yml) as its current entry point.

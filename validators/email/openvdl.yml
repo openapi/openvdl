@@ -1,0 +1,14 @@
+openvdl: "0.1"
+id: "openvdl/maintained/email"
+version: "0.1.0"
+name: "Maintained Email Validators"
+description: "Catalog entry point for curated email validators maintained by OpenVDL."
+imports:
+  - "../../examples/email.yaml"
+  - "../../examples/email-acme.yaml"
+compose:
+  anyOf:
+    - ref: "../../examples/email.yaml"
+    - ref: "../../examples/email-acme.yaml"
+metadata:
+  role: library-namespace
