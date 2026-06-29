@@ -37,7 +37,7 @@ In that sense, OpenVDL is closer to what OpenAPI did for APIs than to a traditio
 - [docs/specification.md](docs/specification.md): practical specification overview
 - [docs/composition-model.md](docs/composition-model.md): foundational model for extension, composition, and validator aggregation
 - [docs/provider-integration-model.md](docs/provider-integration-model.md): model for provider request/response contracts, truth sources, and API adaptation
-- [ROADMA.md](ROADMA.md): working roadmap for the evolution of the spec
+- [ROADMAP.md](ROADMAP.md): working roadmap for the evolution of the spec
 - [examples/email.yaml](examples/email.yaml): example email validator
 - [examples/iban.yaml](examples/iban.yaml): example IBAN validator
 - [examples/email-acme.yaml](examples/email-acme.yaml): example of extending a base validator
@@ -154,4 +154,4 @@ One open architectural question is whether providers should implement OpenVDL na
 
 This repository currently contains a draft specification intended for discussion and experimentation. It is not yet a final standard.
 
-Current work is tracked in [ROADMA.md](ROADMA.md).
+Current work is tracked in [ROADMAP.md](ROADMAP.md).
