@@ -6,7 +6,7 @@ This document defines the Open Validation Description Language (OpenVDL), a decl
 
 ## Status of This Memo
 
-This document is an Internet-Draft.
+This document is a draft specification of the OpenVDL project, written in the style of an IETF Internet-Draft. It has not been submitted to the IETF and has no IETF standing. The authors intend to submit it as an individual Internet-Draft.
 
 It is intended for discussion and experimentation. No implementation is required to conform at this stage.
 

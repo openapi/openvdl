@@ -1,7 +1,5 @@
-Open Network Working Group                                     OpenVDL Team
-Internet-Draft                                                 June 29, 2026
-Intended status: Informational
-Expires: December 31, 2026
+OpenVDL Project                                                OpenVDL Team
+Draft Specification (RFC-style)                           September 28, 2026
 
 
            Open Validation Description Language (OpenVDL)
@@ -17,8 +15,13 @@ Abstract
 
 Status of This Memo
 
-   This Internet-Draft is submitted for discussion and experimentation.
-   No implementation is required to conform at this stage.
+   This document is a draft specification of the OpenVDL project,
+   written in the style of an IETF Internet-Draft. It has not been
+   submitted to the IETF and has no IETF standing. The authors intend
+   to submit it as an individual Internet-Draft.
+
+   It is intended for discussion and experimentation. No implementation
+   is required to conform at this stage.
 
    This document is not an RFC and is not yet a final standard.
 
