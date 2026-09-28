@@ -144,6 +144,19 @@ This includes formalizing:
 - trust/source metadata
 - failure and timeout semantics
 
+### 7. Ecosystem Alignment
+
+See [docs/related-work.md](docs/related-work.md). Proposed direction:
+
+- [ ] evaluate CEL as the expression language for custom predicates
+- [ ] align composition keywords with JSON Schema where semantics overlap
+- [ ] define a JSON Schema bridge (`format: "openvdl:<validator-id>@<version>"`)
+- [ ] generate IBAN validators from the SWIFT IBAN Registry, with provenance facts
+- [ ] generate phone validators from libphonenumber metadata, with provenance facts
+- [ ] define a parametric weighted-checksum rule (weights, modulus, check-digit position, character mapping)
+- [ ] publish a conformance suite of shared test vectors
+- [ ] benchmark coverage against python-stdnum test cases (reuse test data only, not LGPL code)
+
 ## Proposed Longer-Term Work
 
 - registry and distribution model

@@ -37,6 +37,7 @@ In that sense, OpenVDL is a standard for the formal definition and management of
 - [docs/specification.md](docs/specification.md): practical specification overview
 - [docs/composition-model.md](docs/composition-model.md): foundational model for extension, composition, and validator aggregation
 - [docs/provider-integration-model.md](docs/provider-integration-model.md): model for provider request/response contracts, truth sources, and API adaptation
+- [docs/related-work.md](docs/related-work.md): related work, what is distinctive, and ecosystem alignment
 - [ROADMAP.md](ROADMAP.md): working roadmap for the evolution of the spec
 - [libopenvdl/](libopenvdl): early C reference runtime scaffold for local validation
 - [validators/](validators): curated maintained validator library with a single `openvdl.yml` entry point
@@ -203,6 +204,16 @@ An early runtime scaffold is available in [libopenvdl/](libopenvdl).
 A curated maintained validator library scaffold is available in [validators/](validators), with [validators/openvdl.yml](validators/openvdl.yml) as its current entry point.
 
 An exploration diary scaffold is available in [explorations/](explorations), with [explorations/index.md](explorations/index.md) as its current index.
+
+## Related Work
+
+Declarative validation is not a new idea: LIVR, JSON Schema, CEL/Protovalidate,
+libphonenumber and python-stdnum all move parts of validation out of application code.
+OpenVDL focuses on the layer they leave open: a shared, versioned definition of what
+"valid" means for real-world identifiers, where that knowledge comes from, and when it
+changed. See [docs/related-work.md](docs/related-work.md) for the survey and the
+alignment direction (CEL, JSON Schema bridge, generation from authoritative data,
+conformance suite).
 
 ## License
 
