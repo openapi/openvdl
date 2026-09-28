@@ -203,3 +203,19 @@ An early runtime scaffold is available in [libopenvdl/](libopenvdl).
 A curated maintained validator library scaffold is available in [validators/](validators), with [validators/openvdl.yml](validators/openvdl.yml) as its current entry point.
 
 An exploration diary scaffold is available in [explorations/](explorations), with [explorations/index.md](explorations/index.md) as its current index.
+
+## License
+
+OpenVDL uses two licenses:
+
+- **Code and validator documents**, under [Apache License 2.0](LICENSE):
+  - [libopenvdl/](libopenvdl)
+  - [examples/](examples)
+  - [validators/](validators)
+- **Specification and documentation**, under [Creative Commons Attribution 4.0 International (CC BY 4.0)](LICENSE-SPEC):
+  - [RFC-OpenVDL.txt](RFC-OpenVDL.txt)
+  - [docs/](docs)
+  - [explorations/](explorations)
+  - this README and the other Markdown documents in the repository root
+
+Copyright 2026 The OpenVDL Authors.

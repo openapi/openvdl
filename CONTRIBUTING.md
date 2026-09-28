@@ -26,6 +26,12 @@ the draft and new validators written as OpenVDL documents.
 - Cite the standard or source you relied on in `metadata.references` or in `facts`.
 - Check that the file is valid YAML before opening a pull request.
 
+## Licensing of contributions
+
+By contributing you agree that code and validator documents are licensed under the
+[Apache License 2.0](LICENSE), and specification and documentation text under
+[CC BY 4.0](LICENSE-SPEC). See the License section of the [README](README.md).
+
 ## Commits and pull requests
 
 - Keep each pull request focused on one change.
