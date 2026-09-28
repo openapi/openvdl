@@ -1,43 +1,44 @@
 # OpenVDL Serialization Considerations
 
-## Premessa
+## Premise
 
-Una scelta importante per OpenVDL e' distinguere tra:
+An important choice for OpenVDL is to distinguish between:
 
-- il **data model** del linguaggio
-- la sua **serializzazione concreta**
+- the **data model** of the language
+- its **concrete serialization**
 
-Questa distinzione conta molto. Se OpenVDL viene definito direttamente come "un formato YAML", allora lo standard eredita pregi e limiti di YAML. Se invece OpenVDL viene definito come un modello semantico astratto, allora YAML, JSON e altri formati diventano semplici rappresentazioni dello stesso contenuto.
+This distinction matters a lot. If OpenVDL is defined directly as "a YAML format", the standard inherits the strengths and limits of YAML. If OpenVDL is instead defined as an abstract semantic model, then YAML, JSON and other formats become simple representations of the same content.
 
-La scelta raccomandata e':
+The recommended choice is:
 
-- **OpenVDL non dovrebbe essere YAML**
-- **OpenVDL dovrebbe essere un data model astratto**
-- **YAML e JSON dovrebbero essere serializzazioni ufficiali del modello**
+- **OpenVDL should not be YAML**
+- **OpenVDL should be an abstract data model**
+- **YAML and JSON should be official serializations of the model**
 
-In formulazione RFC:
+In RFC wording:
 
 > This document defines the OpenVDL data model. YAML and JSON are
 > serialization formats of that model.
 
-## Perche' YAML e' una scelta naturale
+## Why YAML is a natural choice
 
-YAML e' una scelta naturale per un progetto come OpenVDL, ma non e'
-automatica ne' priva di costi.
+YAML is a natural choice for a project like OpenVDL, but it is neither
+automatic nor free of costs.
 
-OpenVDL vuole descrivere validatori leggibili da umani, facilmente
-discutibili in una repo, e semplici da condividere tra implementazioni
-diverse. Da questo punto di vista YAML ha diversi vantaggi pratici.
+OpenVDL aims to describe validators that are readable by humans, easy
+to discuss in a repository, and simple to share across different
+implementations. From this point of view YAML has several practical
+advantages.
 
-## YAML come metalinguaggio: punti a favore
+## YAML as a metalanguage: arguments in favor
 
-### 1. Leggibilita' umana
+### 1. Human readability
 
-Per una specifica come OpenVDL e' importante che un validatore per
-email, IBAN o VAT number possa essere letto anche senza tooling
-specializzato.
+For a specification like OpenVDL it is important that a validator for
+email, IBAN or VAT numbers can be read even without specialized
+tooling.
 
-Esempio:
+Example:
 
 ```yaml
 rules:
@@ -47,48 +48,48 @@ rules:
     algorithm: mod97
 ```
 
-Questo e' immediatamente leggibile anche in review, issue tracker,
-documentazione e repository pubbliche.
+This is immediately readable in reviews, issue trackers,
+documentation and public repositories.
 
-### 2. Familiarita' diffusa
+### 2. Widespread familiarity
 
-YAML e' gia' molto familiare a sviluppatori e operatori per via di
-strumenti e standard come:
+YAML is already very familiar to developers and operators thanks to
+tools and standards such as:
 
 - OpenAPI
 - GitHub Actions
 - Kubernetes
 - Docker Compose
-- molti sistemi CI/CD
+- many CI/CD systems
 
-Usare una sintassi gia' nota abbassa la barriera d'ingresso.
+Using a syntax people already know lowers the barrier to entry.
 
-### 3. Buona resa per strutture annidate
+### 3. Good fit for nested structures
 
-OpenVDL probabilmente avra':
+OpenVDL will probably have:
 
-- regole
-- stage
-- condizioni
-- composizione tra validatori
+- rules
+- stages
+- conditions
+- composition between validators
 - metadata
 
-YAML rappresenta bene strutture annidate senza troppo rumore sintattico.
+YAML represents nested structures well without much syntactic noise.
 
-### 4. Ottimo per esempi e collaborazione
+### 4. Great for examples and collaboration
 
-Per esempi didattici, documentazione, draft di specifica e contributi
-community, YAML e' spesso piu' adatto di JSON, soprattutto nelle prime
-fasi di un progetto.
+For teaching examples, documentation, specification drafts and
+community contributions, YAML is often better suited than JSON,
+especially in the early phases of a project.
 
-## YAML come metalinguaggio: punti contro
+## YAML as a metalanguage: arguments against
 
-### 1. Ambiguita' semantiche
+### 1. Semantic ambiguities
 
-YAML ha una storia di parsing non perfettamente uniforme tra parser,
-versioni e librerie.
+YAML has a history of parsing that is not perfectly uniform across
+parsers, versions and libraries.
 
-Esempi classici:
+Classic examples:
 
 - `yes`
 - `no`
@@ -96,47 +97,46 @@ Esempi classici:
 - `off`
 - `01`
 
-possono essere interpretati in modi inattesi a seconda del parser o del
-profilo YAML utilizzato.
+can be interpreted in unexpected ways depending on the parser or the
+YAML profile in use.
 
-Per uno standard che vuole determinismo forte, questo e' un problema
-reale, non teorico.
+For a standard that aims at strong determinism, this is a real
+problem, not a theoretical one.
 
-### 2. Minore rigidita' rispetto a JSON
+### 2. Less rigid than JSON
 
-YAML e' molto flessibile, ma proprio per questo e' piu' difficile da
-vincolare in modo rigoroso e uniforme, soprattutto se si vogliono
-ridurre a zero le differenze di interpretazione tra implementazioni.
+YAML is very flexible, but for that very reason it is harder to
+constrain rigorously and uniformly, especially if the goal is to
+reduce differences in interpretation between implementations to zero.
 
-### 3. Errori di indentazione e problemi invisibili
+### 3. Indentation errors and invisible problems
 
-Whitespace, indentazione e piccoli errori formali possono produrre
-problemi difficili da individuare, specialmente in file lunghi o
-complessi.
+Whitespace, indentation and small formal mistakes can produce problems
+that are hard to spot, especially in long or complex files.
 
-### 4. Percezione di "formato morbido"
+### 4. Perception as a "soft format"
 
-In una RFC o in uno standard tecnico, YAML puo' essere percepito come
-troppo permissivo se l'obiettivo e' garantire un comportamento
-deterministico e strettamente interoperabile.
+In an RFC or a technical standard, YAML may be perceived as too
+permissive if the goal is to guarantee deterministic and strictly
+interoperable behavior.
 
-## Alternative da considerare
+## Alternatives to consider
 
 ## JSON
 
-### Vantaggi
+### Advantages
 
-- piu' rigido
-- piu' universale
-- piu' facile da parsare in modo deterministico
-- molto adatto a tooling automatico
+- more rigid
+- more universal
+- easier to parse deterministically
+- well suited to automated tooling
 
-### Svantaggi
+### Disadvantages
 
-- meno leggibile da umani
-- piu' rumoroso nei documenti di esempio
+- less readable for humans
+- noisier in example documents
 
-Esempio:
+Example:
 
 ```json
 {
@@ -149,35 +149,35 @@ Esempio:
 
 ## JSON Schema
 
-JSON Schema non e' un'alternativa diretta a OpenVDL come linguaggio, ma
-e' uno strumento molto utile per descrivere e validare la struttura dei
-documenti OpenVDL.
+JSON Schema is not a direct alternative to OpenVDL as a language, but
+it is a very useful tool for describing and validating the structure
+of OpenVDL documents.
 
-Uso consigliato:
+Recommended use:
 
-- OpenVDL data model come standard
-- YAML e JSON come serializzazioni
-- JSON Schema per validare formalmente la struttura
+- OpenVDL data model as the standard
+- YAML and JSON as serializations
+- JSON Schema to formally validate the structure
 
 ## TOML
 
-### Vantaggi
+### Advantages
 
-- piu' semplice di YAML
-- leggibile
-- meno ambiguo
+- simpler than YAML
+- readable
+- less ambiguous
 
-### Svantaggi
+### Disadvantages
 
-- meno naturale per strutture profondamente annidate
-- meno espressivo per certi casi di composizione complessa
+- less natural for deeply nested structures
+- less expressive for some complex composition cases
 
-TOML puo' essere piacevole per configurazioni, ma meno adatto come
-serializzazione primaria di un linguaggio descrittivo articolato.
+TOML can be pleasant for configuration, but it is less suited as the
+primary serialization of an articulated description language.
 
-## S-expression / sintassi Lisp-like
+## S-expressions / Lisp-like syntax
 
-Esempio:
+Example:
 
 ```lisp
 (and
@@ -185,93 +185,93 @@ Esempio:
   (checksum mod97))
 ```
 
-### Vantaggi
+### Advantages
 
-- molto formale
-- facile da parsare
-- ottimo per rappresentazioni canoniche
+- very formal
+- easy to parse
+- great for canonical representations
 
-### Svantaggi
+### Disadvantages
 
-- poco familiare alla maggior parte degli sviluppatori
-- probabilmente difficile da far adottare come sintassi principale
+- unfamiliar to most developers
+- probably hard to get adopted as the main syntax
 
-## DSL custom
+## Custom DSL
 
-Esempio:
+Example:
 
 ```text
 length max 34
 checksum mod97
 ```
 
-### Vantaggi
+### Advantages
 
-- massima aderenza al dominio
-- sintassi molto compatta
+- maximum adherence to the domain
+- very compact syntax
 
-### Svantaggi
+### Disadvantages
 
-- richiede parser dedicati
-- richiede formatter, tooling, syntax highlighting e validatori
-- aumenta di molto il costo iniziale dello standard
+- requires dedicated parsers
+- requires formatters, tooling, syntax highlighting and validators
+- greatly increases the initial cost of the standard
 
-Per una fase iniziale del progetto, una DSL custom sembra un costo
-ingiustificato.
+For an early phase of the project, a custom DSL looks like an
+unjustified cost.
 
-## Raccomandazione
+## Recommendation
 
-La raccomandazione piu' solida e' questa:
+The most solid recommendation is this:
 
-### 1. OpenVDL deve definire un modello semantico astratto
+### 1. OpenVDL must define an abstract semantic model
 
-Lo standard non dovrebbe coincidere con una singola sintassi concreta.
+The standard should not coincide with a single concrete syntax.
 
-### 2. YAML dovrebbe essere una serializzazione ufficiale orientata agli umani
+### 2. YAML should be an official human-oriented serialization
 
-YAML e' ottimo per:
+YAML is great for:
 
-- esempi
-- documentazione
-- editing manuale
-- collaborazione in repo
+- examples
+- documentation
+- manual editing
+- collaboration in repositories
 
-### 3. JSON dovrebbe essere una serializzazione ufficiale orientata alle macchine
+### 3. JSON should be an official machine-oriented serialization
 
-JSON e' ottimo per:
+JSON is great for:
 
-- parser rigorosi
-- interscambio tool-to-tool
-- implementazioni embedded
-- pipeline automatiche
+- rigorous parsers
+- tool-to-tool interchange
+- embedded implementations
+- automated pipelines
 
-### 4. JSON Schema dovrebbe essere usato per la validazione strutturale
+### 4. JSON Schema should be used for structural validation
 
-Questo permette di vincolare in modo rigoroso la forma dei documenti,
-anche quando la serializzazione scelta e' YAML.
+This makes it possible to rigorously constrain the shape of documents,
+even when the chosen serialization is YAML.
 
-### 5. L'estensione del file puo' restare convenzionale
+### 5. The file extension can remain conventional
 
-Possibili convenzioni:
+Possible conventions:
 
 - `openvdl.yaml`
 - `openvdl.json`
-- eventualmente `.ovdl` come estensione di ecosistema
+- possibly `.ovdl` as an ecosystem extension
 
-## Suggerimento finale
+## Final suggestion
 
-La posizione architetturalmente piu' forte per OpenVDL e' questa:
+The architecturally strongest position for OpenVDL is:
 
-- non legare lo standard a YAML
-- usare YAML come sintassi comoda
-- mantenere il modello indipendente dal formato
+- do not tie the standard to YAML
+- use YAML as a convenient syntax
+- keep the model independent of the format
 
-In pratica:
+In practice:
 
-- **YAML per gli umani**
-- **JSON per le macchine**
-- **JSON Schema per la validazione della struttura**
+- **YAML for humans**
+- **JSON for machines**
+- **JSON Schema for structural validation**
 
-Questa scelta rende OpenVDL piu' robusto come standard, piu'
-interoperabile tra implementazioni, e meno esposto ai limiti specifici
-di un singolo formato di serializzazione.
+This choice makes OpenVDL more robust as a standard, more
+interoperable across implementations, and less exposed to the specific
+limits of a single serialization format.
