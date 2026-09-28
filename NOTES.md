@@ -1,4 +1,5 @@
-Ecco una bozza che puoi usare come base per il progetto e per un futuro Internet-Draft.
+> Original seed notes for OpenVDL (v0.1). Kept for history; the current
+> material lives in [README.md](README.md) and [docs/](docs).
 
 # OpenVDL - Open Validation Description Language
 
@@ -30,7 +31,7 @@ OpenVDL proposes a different model.
 
 Instead of implementing validators, software interprets validator descriptions.
 
-Just as OpenAPI describes HTTP APIs without implementing them, OpenVDL describes validation logic without binding it to a programming language.
+OpenVDL describes validation logic without binding it to a programming language.
 
 The validator becomes data.
 
@@ -575,5 +576,3 @@ ISO 7064
 Acknowledgments
 
 The OpenVDL community and all contributors dedicated to making validation portable, deterministic and implementation independent.
-
-Secondo me c'è un'idea che può rendere il progetto davvero distintivo rispetto ai semplici "validator framework": **OpenVDL non dovrebbe standardizzare i validatori esistenti, ma la loro rappresentazione**. Se riuscisse a diventare il formato comune con cui si descrivono i validatori, allora linguaggi, framework, database, API gateway, editor, IDE e strumenti di AI potrebbero tutti interpretare la stessa specifica invece di riscrivere continuamente la stessa logica. Questo lo avvicina più a ciò che OpenAPI è stato per le API che a una semplice libreria di validazione.

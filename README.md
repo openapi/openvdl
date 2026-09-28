@@ -29,11 +29,11 @@ OpenVDL proposes a different model:
 - validators can be extended and composed instead of copied
 - an OpenVDL file can act as an entry point that aggregates other validators
 
-In that sense, OpenVDL is closer to what OpenAPI did for APIs than to a traditional validation library.
+In that sense, OpenVDL is a standard for the formal definition and management of validators, not a traditional validation library.
 
 ## Repository Structure
 
-- [docs/internet-draft.md](docs/internet-draft.md): RFC-style Internet-Draft for the format
+- [docs/internet-draft.md](docs/internet-draft.md): RFC-style draft of the format (not yet submitted to the IETF)
 - [docs/specification.md](docs/specification.md): practical specification overview
 - [docs/composition-model.md](docs/composition-model.md): foundational model for extension, composition, and validator aggregation
 - [docs/provider-integration-model.md](docs/provider-integration-model.md): model for provider request/response contracts, truth sources, and API adaptation
@@ -191,6 +191,10 @@ The intended split is:
 ## Status
 
 This repository currently contains a draft specification intended for discussion and experimentation. It is not yet a final standard.
+
+The specification is written as an RFC-style draft ([RFC-OpenVDL.txt](RFC-OpenVDL.txt)). It has not been submitted to the IETF yet; the intention is to submit it as an individual Internet-Draft.
+
+Contributions are welcome: see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 Current work is tracked in [ROADMAP.md](ROADMAP.md).
 
