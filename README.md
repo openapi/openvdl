@@ -1,85 +1,85 @@
 # OpenVDL
 
-OpenVDL (Open Validation Description Language) is an open specification for describing data validation rules in a portable, machine-readable, and implementation-independent format.
+**Portable validation rules, defined as data.**
 
-The goal is to standardize the representation of validators, not a single validator implementation. A compliant engine can interpret the same OpenVDL document in any language, framework, or runtime.
+[![Status: v0.1 draft](https://img.shields.io/badge/status-v0.1%20draft-amber)](#status)
+[![Code and validators: Apache 2.0](https://img.shields.io/badge/code%20%26%20validators-Apache%202.0-blue)](LICENSE)
+[![Specification and docs: CC BY 4.0](https://img.shields.io/badge/spec%20%26%20docs-CC%20BY%204.0-blue)](LICENSE-SPEC)
+[![Contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen)](CONTRIBUTING.md)
 
-## Why
+OpenVDL (Open Validation Description Language) is a draft open specification for
+expressing data validation rules as portable, versioned documents. The goal is to
+let applications in different languages share the same definition of what makes
+a value valid.
 
-Validation logic is usually embedded in source code and reimplemented repeatedly across ecosystems:
+[Read the specification](docs/specification.md) · [Explore examples](examples) ·
+[View the roadmap](ROADMAP.md) · [Contribute](CONTRIBUTING.md)
 
-- email
-- IBAN
-- ISBN
-- UUID
-- VAT numbers
-- fiscal identifiers
-- phone numbers
-- postal codes
-- business identifiers
-- banking identifiers
+> **Early-stage project:** the specification is a v0.1 draft, and the reference
+> runtime is a scaffold. Examples illustrate the proposed format; support across
+> independent engines still needs to be built and tested.
 
-This creates duplicated work, inconsistent behavior, and difficult long-term maintenance.
+## Why OpenVDL?
 
-OpenVDL proposes a different model:
+An email address, IBAN, or VAT number often gets checked in several services,
+each with its own copy of the rules. Those copies drift as formats and policies
+change, making it difficult to explain why the same value passes in one place
+and fails in another.
 
-- validators are data
-- validation engines interpret validator descriptions
-- the same validator can run across multiple implementations
-- validators can be extended and composed instead of copied
-- an OpenVDL file can act as an entry point that aggregates other validators
+OpenVDL proposes keeping the definition in a document that teams can read,
+review, and version together:
 
-In that sense, OpenVDL is a standard for the formal definition and management of validators, not a traditional validation library.
+- **Define once:** describe inputs, normalization steps, and named validation rules.
+- **Reuse and compose:** extend base validators and combine them into larger flows.
+- **Keep the context:** record the facts and sources behind a rule as it evolves.
+- **Share across languages:** give engines a common definition to interpret.
 
-## Repository Structure
+The specification covers the representation and evaluation of validators.
+Consistent behavior across implementations is a design goal that requires precise
+semantics and shared conformance tests.
 
-- [docs/internet-draft.md](docs/internet-draft.md): RFC-style draft of the format (not yet submitted to the IETF)
-- [docs/specification.md](docs/specification.md): practical specification overview
-- [docs/composition-model.md](docs/composition-model.md): foundational model for extension, composition, and validator aggregation
-- [docs/provider-integration-model.md](docs/provider-integration-model.md): model for provider request/response contracts, truth sources, and API adaptation
-- [docs/related-work.md](docs/related-work.md): related work, what is distinctive, and ecosystem alignment
-- [ROADMAP.md](ROADMAP.md): working roadmap for the evolution of the spec
-- [libopenvdl/](libopenvdl): early C reference runtime scaffold for local validation
-- [validators/](validators): curated maintained validator library with a single `openvdl.yml` entry point
-- [explorations/](explorations): diary of agentic and LLM-assisted exploration rounds over world facts
-- [examples/email.yaml](examples/email.yaml): example email validator
-- [examples/iban.yaml](examples/iban.yaml): example IBAN validator
-- [examples/email-acme.yaml](examples/email-acme.yaml): example of extending a base validator
-- [examples/user-identifier.yaml](examples/user-identifier.yaml): example of validator aggregation with `anyOf`
-- [examples/vat-by-country.yaml](examples/vat-by-country.yaml): example of validator dispatch with `match/cases`
+## A first look
 
-## Design Principles
+Suppose an internal service accepts email addresses only at `acme.com`. This
+excerpt from [the email extension example](examples/email-acme.yaml) declares
+the base validator and adds the domain policy:
 
-- Declarative
-- Portable
-- Language independent
-- Extensible
-- Composable
-- Deterministic
-- Versionable
-- Human readable
+```yaml
+openvdl: "0.1"
+id: "acme/email"
+version: "1.0.0"
+extends:
+  - "openvdl/email@1"
+stages:
+  - id: acme-policy
+    rules:
+      - id: acme-domain-only
+        type: domainEquals
+        value: acme.com
+```
 
-## Scope
+The shared email rules and the local policy have separate definitions, with an
+explicit dependency between them. The full example adds a local-part length
+constraint and declares the input and result model.
 
-OpenVDL describes validation logic for structured values, including:
+Explore [IBAN checks](examples/iban.yaml),
+[alternative identifiers with `anyOf`](examples/user-identifier.yaml), or
+[VAT routing by country](examples/vat-by-country.yaml).
 
-- email addresses
-- URLs
-- UUIDs
-- IP addresses
-- IBAN
-- BIC
-- ISBN
-- credit cards
-- national identifiers
-- VAT numbers
-- postal codes
-- vehicle identification numbers
-- domain names
-- phone numbers
-- product codes
+## Design at a glance
 
-It is also suitable for organization-specific or provider-specific validation policies.
+| Principle | What it means |
+|---|---|
+| Declarative and readable | Rules are documents that people can inspect and engines can interpret. |
+| Portable | Definitions are independent of application languages and frameworks. |
+| Composable | Shared validators can be extended, referenced, and combined. |
+| Versioned | Changes to definitions and their dependencies can be tracked explicitly. |
+| Deterministic | Compliant engines should agree for the same input, definition, and enabled capabilities. |
+
+The intended scope includes email, URLs, domains, IP addresses, UUIDs, IBANs,
+BICs, ISBNs, payment card numbers, national and business identifiers, VAT numbers,
+phone numbers, postal codes, vehicle identifiers, and product codes. Provider
+and organization policies can layer additional constraints on top.
 
 ## Foundational Model
 
@@ -106,20 +106,17 @@ Typical examples:
 
 ## Validation Model
 
-A validator is composed of one or more stages. Each stage adds constraints and produces deterministic results.
+The draft organizes a validator into stages, such as syntax checks, provider
+policy, and organization constraints. Evaluation produces one of three results:
 
-Typical flow:
+| Result | Meaning |
+|---|---|
+| `VALID` | All applicable constraints passed. |
+| `INVALID` | A validation rule failed. |
+| `ERROR` | Evaluation could not complete, for example because a required reference could not be resolved. |
 
-1. syntax validation
-2. policy validation
-3. organization-specific constraints
-4. final result
-
-Every compliant implementation should return one of:
-
-- `VALID`
-- `INVALID`
-- `ERROR`
+Structured diagnostics can identify the rule, location, and expected condition
+behind a result.
 
 ## Composition Primitives
 
@@ -204,6 +201,29 @@ An early runtime scaffold is available in [libopenvdl/](libopenvdl).
 A curated maintained validator library scaffold is available in [validators/](validators), with [validators/openvdl.yml](validators/openvdl.yml) as its current entry point.
 
 An exploration diary scaffold is available in [explorations/](explorations), with [explorations/index.md](explorations/index.md) as its current index.
+
+## Find your way around
+
+| Start here | What you will find |
+|---|---|
+| [Specification overview](docs/specification.md) | Core concepts and the proposed data model. |
+| [RFC-style draft](docs/internet-draft.md) | The formal draft, not yet submitted to the IETF. |
+| [Composition model](docs/composition-model.md) | Extension, references, and validator aggregation. |
+| [Provider integration](docs/provider-integration-model.md) | External sources and API adaptation. |
+| [Examples](examples) | Email, IBAN, extension, composition, and country dispatch. |
+| [Validator library](validators) | The initial catalog and its `openvdl.yml` entry point. |
+| [Reference runtime](libopenvdl) | The early C implementation scaffold. |
+| [Exploration diary](explorations) | Research rounds behind proposed facts and rules. |
+| [Roadmap](ROADMAP.md) | Open questions and planned work. |
+
+## Get involved
+
+Pick a format you know well and try describing its rules. Useful contributions
+include validator definitions, authoritative sources, test vectors, feedback on
+ambiguous semantics, and independent engines.
+
+Read [CONTRIBUTING.md](CONTRIBUTING.md) or
+[open an issue](https://github.com/openapi/openvdl/issues) to start a discussion.
 
 ## Related Work
 
